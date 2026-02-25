@@ -38,6 +38,15 @@
                 onchange="this.form.submit()"
               />
             </form>
+        
+            <form method="POST" action="{% url 'grocery:add' %}">
+  {% csrf_token %}
+  <h2>grocery bud</h2>
+  <div class="form-control">
+    <input type="text" name="name" class="form-input" placeholder="e.g. eggs" />
+    <button type="submit" class="btn">add item</button>
+  </div>
+</form>
 
             <p style="text-decoration: {% if item.completed %}line-through{% else %}none{% endif %}">
               {{ item.name }}
