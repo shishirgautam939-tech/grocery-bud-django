@@ -15,29 +15,54 @@
   </head>
   <body>
     <section class="section-center">
-      <!-- Items List -->
+
+      <form method="POST" action="{% url 'grocery:index' %}" class="grocery-form">
+        {% csrf_token %}
+        <input
+          type="text"
+          name="name"
+          class="form-control"
+          placeholder="e.g. eggs"
+        />
+        <button type="submit" class="btn submit-btn">Add Item</button>
+      </form>
+
       <div class="items">
         {% for item in items %}
-        <div class="single-item">
-          <input type="checkbox" {% if item.completed %}checked{% endif %} />
-          <p
-            style="text-decoration: {% if item.completed %}line-through{% else %}none{% endif %}"
-          >
-            {{ item.name }}
-          </p>
-          <a href="#" class="btn icon-btn edit-btn">
-            <i class="fa-regular fa-pen-to-square"></i>
-          </a>
-          <button class="btn icon-btn remove-btn" type="submit">
-            <i class="fa-regular fa-trash-can"></i>
-          </button>
-        </div>
+          <div class="single-item">
+
+            <form method="POST" action="{% url 'grocery:toggle' item.id %}" style="display:inline;">
+              {% csrf_token %}
+              <input
+                type="checkbox"
+                {% if item.completed %}checked{% endif %}
+                onchange="this.form.submit()"
+              />
+            </form>
+
+            <p style="text-decoration: {% if item.completed %}line-through{% else %}none{% endif %}">
+              {{ item.name }}
+            </p>
+
+            <a href="{% url 'grocery:update' item.id %}" class="btn icon-btn edit-btn">
+              <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+
+            <form method="POST" action="{% url 'grocery:delete' item.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button class="btn icon-btn remove-btn" type="submit">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </form>
+
+          </div>
         {% empty %}
-        <p style="text-align: center; color: #888;">
-          No items yet. Add one above!
-        </p>
+          <p style="text-align: center; color: #888;">
+            No items yet. Add one above!
+          </p>
         {% endfor %}
       </div>
+
     </section>
   </body>
 </html>
