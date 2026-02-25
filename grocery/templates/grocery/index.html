@@ -16,15 +16,13 @@
   <body>
     <section class="section-center">
 
-      <form method="POST" action="{% url 'grocery:index' %}" class="grocery-form">
+      <form method="POST" action="{% url 'grocery:index' %}">
         {% csrf_token %}
-        <input
-          type="text"
-          name="name"
-          class="form-control"
-          placeholder="e.g. eggs"
-        />
-        <button type="submit" class="btn submit-btn">Add Item</button>
+        <h2>grocery bud</h2>
+        <div class="form-control">
+          <input type="text" name="name" class="form-input" placeholder="e.g. eggs" />
+          <button type="submit" class="btn">add item</button>
+        </div>
       </form>
 
       <div class="items">
