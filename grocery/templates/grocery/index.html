@@ -17,12 +17,22 @@
   <body>
     <section class="section-center">
 
-      <form method="POST" action="{% url 'grocery:index' %}">
+      <form method="POST"
+        action="{% if edit_item %}{% url 'grocery:update' edit_item.id %}{% else %}{% url 'grocery:add' %}{% endif %}">
         {% csrf_token %}
         <h2>grocery bud</h2>
         <div class="form-control">
-          <input type="text" name="name" class="form-input" placeholder="e.g. eggs" />
-          <button type="submit" class="btn">add item</button>
+          <input
+            type="text"
+            name="name"
+            class="form-input"
+            placeholder="e.g. eggs"
+            value="{{ edit_item.name|default:'' }}"
+            {% if edit_item %}autofocus{% endif %}
+          />
+          <button type="submit" class="btn">
+            {% if edit_item %}edit item{% else %}add item{% endif %}
+          </button>
         </div>
       </form>
 
@@ -38,21 +48,12 @@
                 onchange="this.form.submit()"
               />
             </form>
-        
-            <form method="POST" action="{% url 'grocery:add' %}">
-  {% csrf_token %}
-  <h2>grocery bud</h2>
-  <div class="form-control">
-    <input type="text" name="name" class="form-input" placeholder="e.g. eggs" />
-    <button type="submit" class="btn">add item</button>
-  </div>
-</form>
 
             <p style="text-decoration: {% if item.completed %}line-through{% else %}none{% endif %}">
               {{ item.name }}
             </p>
 
-            <a href="{% url 'grocery:update' item.id %}" class="btn icon-btn edit-btn">
+            <a href="{% url 'grocery:edit' item.id %}" class="btn icon-btn edit-btn">
               <i class="fa-regular fa-pen-to-square"></i>
             </a>
 
